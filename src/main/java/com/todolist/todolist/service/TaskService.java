@@ -1,5 +1,8 @@
 package com.todolist.todolist.service;
 
+import com.todolist.todolist.dto.CreateTaskDTO;
+import com.todolist.todolist.dto.UpdateTaskDTO;
+import com.todolist.todolist.exception.custom.ResourceNotFoundException;
 import com.todolist.todolist.model.Task;
 import com.todolist.todolist.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +17,15 @@ public class TaskService {
     private TaskRepository taskRepository;
 
     // CREATE
-    public Task createTask(Task task) {
+    public Task createTask(CreateTaskDTO createTaskDTO) {
+        Task task = new Task(createTaskDTO.getTitle(), createTaskDTO.getDescription());
         return taskRepository.save(task);
     }
 
     // READ (Get one by ID)
-    public Optional<Task> getTaskById(Long id) {
-        return taskRepository.findById(id);
+    public Task getTaskById(Long id) {
+        return taskRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found with an id: " + id));
     }
 
     // READ (Get all)
@@ -29,19 +34,23 @@ public class TaskService {
     }
 
     // UPDATE
-    public Task updateTask(Long id, Task taskDetails) {
+    public Task updateTask(Long id, UpdateTaskDTO updateTaskDTO) {
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found with an id: " + id));
 
-        task.setTitle(taskDetails.getTitle());
-        task.setDescription(taskDetails.getDescription());
-        task.setCompleted(taskDetails.isCompleted());
+        task.setTitle(updateTaskDTO.getTitle());
+        task.setDescription(updateTaskDTO.getDescription());
+        task.setCompleted(updateTaskDTO.isCompleted());
 
         return taskRepository.save(task);
     }
 
     // DELETE
     public void deleteById(Long id) {
+        if (!taskRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Task not found with an id: " + id);
+        }
+
         taskRepository.deleteById(id);
     }
 }

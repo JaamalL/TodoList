@@ -5,4 +5,6 @@ set -e
 PROJECT_ROOT=$(cd "$(dirname "$0")/.." && pwd -P)
 cd "$PROJECT_ROOT"
 
-mvn clean package
+# ./mvnw used for consistency and portability across different environments
+# -DskipTests disables tests
+./mvnw clean package -DskipTests

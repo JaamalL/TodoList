@@ -11,7 +11,7 @@ public class Task {
 
     private String title;
     private String description;
-    private boolean completed = false;
+    private Boolean completed = false;
 
     protected Task() {
     }
@@ -33,7 +33,7 @@ public class Task {
         return description;
     }
 
-    public boolean isCompleted() {
+    public Boolean isCompleted() {
         return completed;
     }
 
@@ -45,7 +45,7 @@ public class Task {
         this.description = description;
     }
 
-    public void setCompleted(boolean completed) {
+    public void setCompleted(Boolean completed) {
         this.completed = completed;
     }
 }

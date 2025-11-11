@@ -3,6 +3,8 @@ FROM eclipse-temurin:21-jdk-jammy AS builder
 WORKDIR /app
 COPY . .
 
+# ./mvnw used for consistency and portability across different environments
+# -DskipTests disables tests
 RUN ./mvnw clean package -DskipTests
 
 
