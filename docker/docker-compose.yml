@@ -15,7 +15,7 @@ services:
   app:
     build:
       context: ..
-      dockerfile: docker/dockerfiles/dev.Dockerfile
+      dockerfile: docker/dockerfiles/development.Dockerfile
     container_name: spring_app
 
     env_file:
